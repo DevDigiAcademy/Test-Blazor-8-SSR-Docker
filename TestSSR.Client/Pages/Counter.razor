@@ -1,0 +1,40 @@
+﻿@page "/wasm/counter/{Count:int?}"
+@rendermode InteractiveAuto
+
+<PageTitle>Counter</PageTitle>
+<div @key=1>
+    @if (Count is not null)
+    {
+        <ComponentDetails Count="@Count" />
+    }
+    else
+    {
+        <h1>Counter</h1>
+
+        <p role="status">Current count: @currentCount</p>
+
+        <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+
+        <button @onclick=@(() => NavigationManager.NavigateTo($"/wasm/counter/{currentCount}"))>SubPage</button>
+    }
+</div>
+
+
+@code {
+    [Parameter] public int? Count { get; set; }
+    [Inject] private NavigationManager NavigationManager { get; set; } = default!;
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if(firstRender)
+        {
+            Console.WriteLine("First render!");
+        }
+    }
+
+    private int currentCount = 0;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+}

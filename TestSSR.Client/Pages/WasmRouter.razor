@@ -1,0 +1,19 @@
+﻿@page "/wasm/*"
+@rendermode @(new InteractiveAutoRenderMode(prerender: false))
+
+<Router AppAssembly="@typeof(Program).Assembly">
+    <Found Context="routeData">
+        <RouteView RouteData="@routeData" DefaultLayout="@typeof(Layout.WasmLayout)" />
+        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+    </Found>
+</Router>
+
+
+@code {
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        Console.WriteLine("Using WASM router");
+    }
+}
