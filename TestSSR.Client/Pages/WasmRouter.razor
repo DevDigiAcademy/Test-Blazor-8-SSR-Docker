@@ -1,7 +1,7 @@
 ﻿@page "/counter/{Count:int?}"
 @rendermode InteractiveAuto
 
-<Router AppAssembly="@typeof(Program).Assembly">
+<Router OnNavigateAsync="Navigation" AppAssembly="@typeof(Program).Assembly">
     <Found Context="routeData">
         @{
             routeData.RouteValues.TryGetValue("Count", out var count);
@@ -12,6 +12,16 @@
 
 @code {
     [Parameter] public int? Count { get; set; }
+    [Inject] NavigationManager NavigationManager { get; set; } = default!;
+
+    private void Navigation(NavigationContext context)
+    {
+        if (!context.Path.StartsWith("counter", StringComparison.InvariantCultureIgnoreCase))
+        {
+            NavigationManager.NavigateTo(context.Path, true);
+        }
+    }
+
     protected override void OnInitialized()
     {
         base.OnInitialized();
