@@ -1,19 +1,28 @@
-﻿@page "/wasm/*"
-@rendermode @(new InteractiveAutoRenderMode(prerender: false))
+﻿@page "/counter/{Count:int?}"
+@rendermode InteractiveAuto
 
 <Router AppAssembly="@typeof(Program).Assembly">
     <Found Context="routeData">
-        <RouteView RouteData="@routeData" DefaultLayout="@typeof(Layout.WasmLayout)" />
-        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+        @{
+            routeData.RouteValues.TryGetValue("Count", out var count);
+        }
+        <Counter Count=@((int?)count) />
     </Found>
 </Router>
 
 
+
 @code {
+    [Parameter] public int? Count { get; set; }
     protected override void OnInitialized()
     {
         base.OnInitialized();
 
         Console.WriteLine("Using WASM router");
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        Console.WriteLine("Render in Router");
     }
 }
