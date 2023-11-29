@@ -1,0 +1,9 @@
+﻿@page "/counter/{count:int?}"
+
+<PageTitle>Counter</PageTitle>
+
+<Counter @key="0" @rendermode="InteractiveServer" Count="Count" />
+
+@code {
+    [Parameter] public int? Count { get; set; }
+}
